@@ -111,6 +111,20 @@ section { padding: 56px 0; border-top: 1px solid var(--rule); }
 .calc .v { font: 500 18px var(--font-mono); }
 .calc .v.save { color: var(--accent); }
 
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.chip { font: 500 12px var(--font-mono); padding: 4px 9px; border: 1px solid var(--rule); background: var(--panel); color: var(--muted); cursor: pointer; }
+.chip[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ranks { display: grid; gap: 5px; }
+.rank { display: grid; grid-template-columns: 9.5em 1fr 3.4em; gap: 8px; align-items: center; font-size: 13px; }
+.rank .bar { height: 8px; background: var(--muted); opacity: .45; }
+.rank.on .bar { background: var(--accent); opacity: 1; }
+.rank .pct { font-family: var(--font-mono); text-align: right; }
+.sliders label { margin-top: 2px; }
+.sliders input[type=range] { margin: 6px 0 10px; }
+.chart .ref { font-size: 11px; }
+
 /* Flow diagrams */
 .flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: 8px; }
 .node { flex: 1 1 120px; border: 1px solid var(--rule); padding: 10px 12px; background: var(--paper); }
@@ -141,7 +155,7 @@ pre { margin: 14px 0 0; padding: 14px; background: var(--paper); border: 1px sol
 .contact { display: grid; gap: 10px; font-size: 16px; }
 .contact div { display: grid; grid-template-columns: 7em 1fr; gap: 10px; padding-bottom: 10px; border-bottom: 1px dotted var(--rule); }
 .contact .k { font: 500 12px var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding-top: 3px; }
-footer { padding: 28px 0 40px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); }
+main { padding-bottom: 40px; }
 
 @media (max-width: 860px) {
   .hero, .sch-body, .about { grid-template-columns: 1fr; gap: 32px; }
@@ -177,15 +191,16 @@ footer { padding: 28px 0 40px; border-top: 1px solid var(--rule); font-size: 13p
     <div>
       <div class="role">Data Analyst · BI · Data Engineering</div>
       <h1>I turn financial data into decisions.</h1>
-      <p class="lede">Eight years in tax and finance at Deloitte taught me what numbers mean and what happens when they are wrong. Now I build the pipelines, models and dashboards behind them.</p>
+      <p class="lede">Eight years in tax and finance at Deloitte and two years as an e-commerce data analyst taught me what numbers mean and what happens when they are wrong. I build the pipelines, models and dashboards behind them.</p>
     </div>
     <div class="ledger" aria-label="Profile summary">
       <div class="cap">Statement of qualifications</div>
       <div class="line"><span class="no">01</span><span class="txt">Tax &amp; finance, Deloitte GES</span><span class="val">8 yrs</span></div>
-      <div class="line"><span class="no">02</span><span class="txt">BSc Economics · MSc Finance &amp; Audit</span><span class="val">✓</span></div>
-      <div class="line"><span class="no">03</span><span class="txt">SQL · Python · Power BI · Fabric</span><span class="val">✓</span></div>
-      <div class="line"><span class="no">04</span><span class="txt">Pipelines: Airflow · PostgreSQL</span><span class="val">✓</span></div>
-      <div class="line"><span class="no">05</span><span class="txt">AI-assisted analysis</span><span class="val">✓</span></div>
+      <div class="line"><span class="no">02</span><span class="txt">Data analyst, e-commerce</span><span class="val">2 yrs</span></div>
+      <div class="line"><span class="no">03</span><span class="txt">BSc Economics · MSc Finance &amp; Audit</span><span class="val">✓</span></div>
+      <div class="line"><span class="no">04</span><span class="txt">SQL · Python · Power BI · Fabric</span><span class="val">✓</span></div>
+      <div class="line"><span class="no">05</span><span class="txt">Pipelines: Airflow · PostgreSQL</span><span class="val">✓</span></div>
+      <div class="line"><span class="no">06</span><span class="txt">AI-assisted analysis</span><span class="val">✓</span></div>
       <div class="total"><span class="no">TOT</span><span class="txt">An analyst who knows what the numbers mean</span></div>
     </div>
   </div>
@@ -193,7 +208,7 @@ footer { padding: 28px 0 40px; border-top: 1px solid var(--rule); font-size: 13p
   <section id="projects">
     <div class="sec-head">
       <h2>Projects</h2>
-      <p>Each project starts with a business question and ends with an answer. Code is on GitHub.</p>
+      <p>Each project starts with a business question and ends with an answer.</p>
     </div>
 
     <!-- Schedule A: tax calculator -->
@@ -300,9 +315,78 @@ GROUP BY delivery_bucket;</code></pre>
       </div>
     </article>
 
-    <!-- Schedule D: Payroll reconciliation -->
+    <!-- Schedule D: Remittances -->
+    <article class="schedule" id="remittances">
+      <div class="sch-top"><span>Schedule D · World Bank data · Interactive report</span><span class="status">Live chart · 2010–2024</span></div>
+      <div class="sch-body">
+        <div>
+          <h3>How dependent are Balkan economies on money sent home from abroad?</h3>
+          <dl class="qa">
+            <div><dt>Question</dt><dd>Hundreds of thousands of people from the Western Balkans work abroad and send money home. How large are these remittances compared with each economy, and is the dependence growing or shrinking?</dd></div>
+            <div><dt>Data</dt><dd>Personal remittances received as a share of GDP, World Bank World Development Indicators, six countries, 2010–2024.</dd></div>
+            <div><dt>Findings</dt><dd>Kosovo depends on remittances most, at 15–19% of GDP every year. Albania's dependence fell steadily, from 13.1% in 2010 to 8.4% in 2024. In 2020 the share jumped in Kosovo and Montenegro as money kept arriving while the economies shrank.</dd></div>
+          </dl>
+          <ul class="tags"><li>REST API</li><li>Python</li><li>Time series</li><li>Interactive charts</li><li>Power BI</li></ul>
+          <div class="links"><a data-repo="balkan-remittances" href="#">Code on GitHub →</a></div>
+        </div>
+        <div class="figure">
+          <p class="fig-title">Kosovo stays far ahead while Albania's share keeps falling</p>
+          <p class="fig-sub">Personal remittances received, % of GDP. Pick a country to highlight it.</p>
+          <div class="chips" id="remChips" role="group" aria-label="Highlight a country"></div>
+          <div class="chart" id="remChart" role="img" aria-label="Line chart of remittances as a share of GDP for six Western Balkan countries, 2010 to 2024"></div>
+          <div class="calc">
+            <label for="remYear"><span>Year</span><strong class="mono" id="remYearOut">2024</strong></label>
+            <input type="range" id="remYear" min="2010" max="2024" step="1" value="2024">
+            <div class="ranks" id="remRanks"></div>
+          </div>
+          <p class="note">Source: World Bank, World Development Indicators (BX.TRF.PWKR.DT.GD.ZS).</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Schedule E: Mortgage affordability -->
+    <article class="schedule" id="mortgage">
+      <div class="sch-top"><span>Schedule E · Finance · Interactive model</span><span class="status">Calculator live · full report planned</span></div>
+      <div class="sch-body">
+        <div>
+          <h3>Can an average salary buy a home in Tirana?</h3>
+          <dl class="qa">
+            <div><dt>Question</dt><dd>Tirana property prices have risen fast. On an average Albanian salary, how much of each month's pay would a typical mortgage take, and how sensitive is that to interest rates?</dd></div>
+            <div><dt>Inputs</dt><dd>Average net wage of about 72,200 lek (≈ €740) a month, from INSTAT's Q1 2026 gross wage of 90,119 lek. Euro-area average rate for new home loans of 3.54% (ECB, July 2026). Tirana prices range from about €1,000/m² in the suburbs to €5,000 in the centre.</dd></div>
+            <div><dt>Finding</dt><dd>A 70 m² flat at €1,700/m² with 20% down and a 25-year loan at 3.54% costs about €479 a month: 65% of an average net salary, more than double the usual 30% guideline. The price equals about 13 years of net pay.</dd></div>
+          </dl>
+          <ul class="tags"><li>Financial modelling</li><li>Scenario analysis</li><li>ECB data</li><li>INSTAT data</li><li>JavaScript</li></ul>
+          <div class="links"><a data-repo="tirana-mortgage-affordability" href="#">Code on GitHub →</a></div>
+        </div>
+        <div class="figure">
+          <p class="fig-title">Every 1-point rise in rates adds about 7–8% of salary to the payment</p>
+          <p class="fig-sub">Monthly payment as % of average net salary, by interest rate</p>
+          <div class="chart" id="mortChart" role="img" aria-label="Line chart of monthly mortgage payment as a share of net salary across interest rates, with a 30 percent guideline"></div>
+          <div class="calc">
+            <div class="sliders">
+              <label for="mSize"><span>Apartment size</span><strong class="mono" id="mSizeOut"></strong></label>
+              <input type="range" id="mSize" min="40" max="120" step="5" value="70">
+              <label for="mPrice"><span>Price per m²</span><strong class="mono" id="mPriceOut"></strong></label>
+              <input type="range" id="mPrice" min="800" max="5000" step="100" value="1700">
+              <label for="mRate"><span>Interest rate</span><strong class="mono" id="mRateOut"></strong></label>
+              <input type="range" id="mRate" min="2" max="8" step="0.01" value="3.54">
+              <label for="mSalary"><span>Net monthly salary</span><strong class="mono" id="mSalaryOut"></strong></label>
+              <input type="range" id="mSalary" min="400" max="3000" step="20" value="740">
+            </div>
+            <div class="row">
+              <div><div class="k">Monthly payment</div><div class="v" id="mPay">–</div></div>
+              <div><div class="k">Share of salary</div><div class="v save" id="mShare">–</div></div>
+              <div><div class="k">Years of pay</div><div class="v" id="mYears">–</div></div>
+            </div>
+          </div>
+          <p class="note">Assumes 20% down payment and a 25-year loan. Sources: INSTAT wage statistics Q1 2026; ECB bank interest rate statistics, July 2026.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Schedule F: Payroll reconciliation -->
     <article class="schedule">
-      <div class="sch-top"><span>Schedule D · dbt · Airflow · CI/CD · Power BI</span><span class="status">Planned</span></div>
+      <div class="sch-top"><span>Schedule F · dbt · Airflow · CI/CD · Power BI</span><span class="status">Planned</span></div>
       <div class="sch-body">
         <div>
           <h3>Can payroll, ledger and tax data be reconciled automatically?</h3>
@@ -333,9 +417,9 @@ GROUP BY delivery_bucket;</code></pre>
       </div>
     </article>
 
-    <!-- Schedule E: Financial statements -->
+    <!-- Schedule G: Financial statements -->
     <article class="schedule">
-      <div class="sch-top"><span>Schedule E · Microsoft Fabric · Python · Power BI</span><span class="status">Planned</span></div>
+      <div class="sch-top"><span>Schedule G · Microsoft Fabric · Python · Power BI</span><span class="status">Planned</span></div>
       <div class="sch-body">
         <div>
           <h3>Which large US companies are under margin pressure?</h3>
@@ -382,7 +466,7 @@ GROUP BY delivery_bucket;</code></pre>
       <div class="sec-head" style="margin:0"><h2>About</h2></div>
       <div>
         <p>For eight years I have prepared and reviewed Italian tax returns for internationally mobile employees at Deloitte. The hardest part was rarely the calculation. It was taking data from many client systems and getting it into a shape you can trust.</p>
-        <p>That is what drew me to data. I now build the whole path: ingesting data from APIs and files, modelling it in SQL and Microsoft Fabric, orchestrating pipelines with Airflow, and presenting it in Power BI.</p>
+        <p>That is what drew me to data. I spent two years as a data analyst in e-commerce, and I now build the whole path: ingesting data from APIs and files, modelling it in SQL and Microsoft Fabric, orchestrating pipelines with Airflow, and presenting it in Power BI.</p>
         <p>I use AI to work faster and check every result before it reaches a decision. I am looking for a role in data analysis, BI or data engineering, especially in finance, tax or HR data.</p>
       </div>
     </div>
@@ -401,17 +485,16 @@ GROUP BY delivery_bucket;</code></pre>
   </section>
 </main>
 
-<footer><div class="wrap">Built with HTML, CSS and JavaScript. Tax figures are from a simplified model using public rules, not tax advice.</div></footer>
 
 <script>
-// ===== EDIT THESE =====
+
 const CONFIG = {
-  github: "your-github-username",
-  linkedin: "https://www.linkedin.com/in/your-profile/",
-  email: "your.email@example.com",
+  github: "frankokovaci",
+  linkedin: "https://www.linkedin.com/in/franceskokovaci/",
+  email: "franceskokovaci95@gmail.com",
   location: "Tirana, Albania"
 };
-// ======================
+
 
 document.querySelectorAll("[data-repo]").forEach(a => {
   a.href = `https://github.com/${CONFIG.github}/${a.dataset.repo}`;
@@ -479,6 +562,97 @@ function drawChart() {
   update();
 }
 drawChart();
+
+// ---------- Remittances (World Bank WDI, % of GDP) ----------
+const REM_YEARS = [2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024];
+const REM = {
+  "Kosovo": [18.8,15.7,15.3,15.7,15.5,15.4,14.8,15.5,15.7,15.8,18.6,18.0,17.2,17.5,17.3],
+  "Montenegro": [10.1,11.3,12.5,12.3,11.9,11.7,11.0,10.9,10.8,10.7,12.7,13.6,13.3,10.5,10.3],
+  "Bosnia and Herz.": [10.6,10.5,10.7,10.8,11.4,11.0,10.8,11.0,11.0,11.4,9.5,10.5,10.5,10.2,10.5],
+  "Albania": [13.1,12.0,11.6,10.0,10.7,11.3,10.9,9.9,9.5,9.5,9.6,9.5,9.2,8.7,8.4],
+  "Serbia": [9.5,7.7,7.9,8.0,7.5,8.2,7.6,7.8,8.4,7.9,6.9,6.9,8.5,7.1,6.4],
+  "North Macedonia": [4.1,4.1,4.0,3.5,3.4,3.2,3.0,3.1,3.0,2.8,3.8,3.5,3.3,2.9,2.7]
+};
+let remSel = "Albania";
+function drawRem() {
+  const W = 560, H = 270, m = { t: 12, r: 16, b: 30, l: 40 };
+  const x = yr => m.l + (yr - 2010) / 14 * (W - m.l - m.r);
+  const y = v => m.t + (1 - v / 20) * (H - m.t - m.b);
+  const yr = +document.getElementById("remYear").value;
+  let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  for (const p of [0, 5, 10, 15, 20]) {
+    s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(p)}" y2="${y(p)}" style="stroke:var(--rule)" stroke-width="1"/>`;
+    s += `<text x="${m.l - 8}" y="${y(p) + 4}" text-anchor="end">${p}%</text>`;
+  }
+  for (const t of [2010, 2014, 2018, 2022, 2024]) s += `<text x="${x(t)}" y="${H - 8}" text-anchor="middle">${t}</text>`;
+  const names = Object.keys(REM).filter(n => n !== remSel).concat([remSel]);
+  for (const n of names) {
+    const on = n === remSel;
+    const d = REM[n].map((v, i) => (i ? "L" : "M") + x(REM_YEARS[i]).toFixed(1) + " " + y(v).toFixed(1)).join(" ");
+    s += `<path d="${d}" style="fill:none;stroke:${on ? "var(--accent)" : "var(--muted)"};opacity:${on ? 1 : 0.35}" stroke-width="${on ? 2.5 : 1.5}"/>`;
+  }
+  const v = REM[remSel][yr - 2010];
+  s += `<line x1="${x(yr)}" x2="${x(yr)}" y1="${m.t}" y2="${H - m.b}" style="stroke:var(--ink)" stroke-dasharray="3 3" stroke-width="1"/>`;
+  s += `<circle cx="${x(yr)}" cy="${y(v)}" r="4.5" style="fill:var(--accent)"/>`;
+  const flip = x(yr) > W - 150;
+  s += `<text class="lbl" x="${flip ? x(yr) - 8 : x(yr) + 8}" y="${y(v) - 8}" text-anchor="${flip ? "end" : "start"}" style="fill:var(--accent);font-size:12px;font-weight:500;paint-order:stroke;stroke:var(--panel);stroke-width:4px">${remSel} ${v.toFixed(1)}%</text>`;
+  s += `</svg>`;
+  document.getElementById("remChart").innerHTML = s;
+  document.getElementById("remYearOut").textContent = yr;
+  const rows = Object.entries(REM).map(([n, a]) => [n, a[yr - 2010]]).sort((a, b) => b[1] - a[1]);
+  document.getElementById("remRanks").innerHTML = rows.map(([n, val]) =>
+    `<div class="rank${n === remSel ? " on" : ""}"><span>${n}</span><span class="bar" style="width:${(val / 20 * 100).toFixed(1)}%"></span><span class="pct">${val.toFixed(1)}%</span></div>`).join("");
+  document.querySelectorAll("#remChips .chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.c === remSel ? "true" : "false"));
+}
+document.getElementById("remChips").innerHTML = Object.keys(REM).map(n => `<button type="button" class="chip" data-c="${n}">${n}</button>`).join("");
+document.getElementById("remChips").addEventListener("click", e => { const b = e.target.closest(".chip"); if (b) { remSel = b.dataset.c; drawRem(); } });
+document.getElementById("remYear").addEventListener("input", drawRem);
+drawRem();
+
+// ---------- Mortgage affordability ----------
+function payment(principal, ratePct, years) {
+  const r = ratePct / 100 / 12, n = years * 12;
+  return r === 0 ? principal / n : principal * r / (1 - Math.pow(1 + r, -n));
+}
+function drawMort() {
+  const size = +document.getElementById("mSize").value;
+  const ppm = +document.getElementById("mPrice").value;
+  const rate = +document.getElementById("mRate").value;
+  const sal = +document.getElementById("mSalary").value;
+  const price = size * ppm, loan = price * 0.8;
+  const pay = payment(loan, rate, 25);
+  document.getElementById("mSizeOut").textContent = size + " m²";
+  document.getElementById("mPriceOut").textContent = eur(ppm);
+  document.getElementById("mRateOut").textContent = rate.toFixed(2) + "%";
+  document.getElementById("mSalaryOut").textContent = eur(sal);
+  document.getElementById("mPay").textContent = eur(pay);
+  document.getElementById("mShare").textContent = Math.round(pay / sal * 100) + "%";
+  document.getElementById("mYears").textContent = (price / (sal * 12)).toFixed(1);
+
+  const W = 560, H = 250, m = { t: 12, r: 16, b: 30, l: 44 };
+  const pts = []; for (let k = 20; k <= 80; k++) pts.push([k / 10, payment(loan, k / 10, 25) / sal * 100]);
+  const ymax = Math.max(100, Math.ceil(Math.max(...pts.map(p => p[1])) / 25) * 25);
+  const x = r => m.l + (r - 2) / 6 * (W - m.l - m.r);
+  const y = v => m.t + (1 - Math.min(v, ymax) / ymax) * (H - m.t - m.b);
+  let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  const step = ymax > 200 ? 100 : ymax > 100 ? 50 : 25;
+  for (let p = 0; p <= ymax; p += step) {
+    s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(p)}" y2="${y(p)}" style="stroke:var(--rule)" stroke-width="1"/>`;
+    s += `<text x="${m.l - 8}" y="${y(p) + 4}" text-anchor="end">${p}%</text>`;
+  }
+  for (const r of [2, 4, 6, 8]) s += `<text x="${x(r)}" y="${H - 8}" text-anchor="middle">${r}%</text>`;
+  s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(30)}" y2="${y(30)}" style="stroke:var(--ink)" stroke-dasharray="5 4" stroke-width="1"/>`;
+  s += `<text class="ref" x="${W - m.r}" y="${y(30) - 6}" text-anchor="end" style="fill:var(--ink)">30% guideline</text>`;
+  s += `<path d="${pts.map((p, i) => (i ? "L" : "M") + x(p[0]).toFixed(1) + " " + y(p[1]).toFixed(1)).join(" ")}" style="fill:none;stroke:var(--accent)" stroke-width="2.5"/>`;
+  const cur = pay / sal * 100;
+  s += `<circle cx="${x(rate)}" cy="${y(cur)}" r="5" style="fill:var(--accent)"/>`;
+  const flip = x(rate) > W - 120;
+  s += `<text x="${flip ? x(rate) - 9 : x(rate) + 9}" y="${y(cur) + 16}" text-anchor="${flip ? "end" : "start"}" style="fill:var(--accent);font-size:12px;font-weight:500;paint-order:stroke;stroke:var(--panel);stroke-width:4px">${Math.round(cur)}% of salary</text>`;
+  s += `</svg>`;
+  document.getElementById("mortChart").innerHTML = s;
+}
+["mSize", "mPrice", "mRate", "mSalary"].forEach(id => document.getElementById(id).addEventListener("input", drawMort));
+drawMort();
 </script>
 </body>
 </html>
