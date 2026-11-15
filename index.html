@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Francesko · Data Portfolio</title>
+<meta name="description" content="Data analyst portfolio: SQL, Python, Power BI and Microsoft Fabric, built on 8 years of tax and finance experience.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: the page reads like a well-kept financial statement: numbered lines,
+   dotted leaders, a double-ruled total, and each project filed as a "Schedule". */
+:root {
+  --paper: #f5f7f6;
+  --panel: #ffffff;
+  --ink: #14211e;
+  --muted: #5a6865;
+  --rule: #cbd4d1;
+  --accent: #0d6a56;
+  --accent-soft: #dcece7;
+  --font-display: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0e1615; --panel: #141f1d; --ink: #e5ece9; --muted: #95a6a1;
+    --rule: #2b3a37; --accent: #46c4a3; --accent-soft: #173b33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0e1615; --panel: #141f1d; --ink: #e5ece9; --muted: #95a6a1;
+  --rule: #2b3a37; --accent: #46c4a3; --accent-soft: #173b33; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 400 17px/1.6 var(--font-body);
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.1; text-wrap: balance; margin: 0; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* Top bar */
+header.top { border-bottom: 1px solid var(--rule); }
+header.top .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-top: 16px; padding-bottom: 16px; flex-wrap: wrap; }
+.brand { font: 600 18px var(--font-display); letter-spacing: .02em; }
+nav { display: flex; gap: 20px; font-size: 15px; }
+nav a { color: var(--ink); text-decoration: none; }
+nav a:hover { color: var(--accent); }
+
+/* Hero */
+.hero { padding: 64px 0 56px; display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: end; }
+.hero .role { font: 500 13px var(--font-mono); text-transform: uppercase; letter-spacing: .12em; color: var(--accent); margin-bottom: 14px; }
+.hero h1 { font-size: clamp(44px, 7vw, 76px); font-weight: 700; letter-spacing: -.01em; }
+.hero p.lede { font-size: 19px; color: var(--muted); max-width: 34em; margin: 20px 0 0; }
+
+.ledger { background: var(--panel); border: 1px solid var(--rule); padding: 22px 24px 18px; }
+.ledger .cap { font: 500 12px var(--font-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 10px; }
+.line { display: grid; grid-template-columns: 2.4em 1fr auto; gap: 10px; align-items: baseline; padding: 7px 0; font-size: 15px; }
+.line .no { font: 400 12px var(--font-mono); color: var(--muted); }
+.line .txt { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+.line .txt::after { content: ""; flex: 1; border-bottom: 1px dotted var(--rule); transform: translateY(-4px); min-width: 12px; }
+.line .val { font: 500 14px var(--font-mono); }
+.total { margin-top: 10px; padding-top: 12px; border-top: 1px solid var(--ink); display: grid; grid-template-columns: 2.4em 1fr; gap: 10px; }
+.total .no { font: 600 12px var(--font-mono); }
+.total .txt { font: 600 19px/1.25 var(--font-display); padding-bottom: 6px; border-bottom: 3px double var(--ink); }
+
+/* Sections */
+section { padding: 56px 0; border-top: 1px solid var(--rule); }
+.sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
+.sec-head h2 { font-size: 34px; font-weight: 600; }
+.sec-head p { margin: 0; color: var(--muted); max-width: 36em; }
+
+/* Project schedules */
+.schedule { background: var(--panel); border: 1px solid var(--rule); margin-bottom: 28px; }
+.sch-top { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 14px 24px; border-bottom: 1px solid var(--rule); font: 500 12px var(--font-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.sch-top .status { color: var(--accent); }
+.sch-body { display: grid; grid-template-columns: 1fr 1.15fr; gap: 36px; padding: 28px 24px; }
+.sch-body h3 { font-size: 28px; font-weight: 600; margin-bottom: 14px; }
+.qa { display: grid; gap: 12px; margin: 0; }
+.qa dt { font: 500 12px var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.qa dd { margin: 2px 0 0; max-width: 34em; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; padding: 0; list-style: none; }
+.tags li { font: 400 12px var(--font-mono); padding: 3px 8px; border: 1px solid var(--rule); }
+.links { display: flex; gap: 18px; margin-top: 16px; font-size: 15px; font-weight: 500; flex-wrap: wrap; }
+
+/* Chart + calculator */
+.figure { min-width: 0; }
+.fig-title { font: 600 18px/1.3 var(--font-display); margin: 0 0 4px; }
+.fig-sub { font-size: 14px; color: var(--muted); margin: 0 0 10px; }
+.chart svg { width: 100%; height: auto; display: block; }
+.chart text { fill: var(--muted); font: 11px var(--font-mono); }
+.chart #lblStd, .chart #lblImp { font-size: 12px; font-weight: 500; paint-order: stroke; stroke: var(--panel); stroke-width: 4px; stroke-linejoin: round; }
+.legend { display: flex; gap: 18px; font-size: 13px; color: var(--muted); margin-top: 6px; flex-wrap: wrap; }
+.legend span::before { content: ""; display: inline-block; width: 18px; height: 3px; margin-right: 6px; vertical-align: middle; background: currentColor; }
+.legend .std { color: var(--muted); }
+.legend .imp { color: var(--accent); }
+.calc { margin-top: 18px; padding: 16px; background: var(--accent-soft); }
+.calc label { font-size: 14px; display: flex; justify-content: space-between; gap: 12px; }
+.calc input[type=range] { width: 100%; accent-color: var(--accent); margin: 10px 0 12px; }
+.calc .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.calc .k { font-size: 12px; color: var(--muted); }
+.calc .v { font: 500 18px var(--font-mono); }
+.calc .v.save { color: var(--accent); }
+
+/* Flow diagrams */
+.flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: 8px; }
+.node { flex: 1 1 120px; border: 1px solid var(--rule); padding: 10px 12px; background: var(--paper); }
+.node b { display: block; font: 600 15px var(--font-display); }
+.node small { color: var(--muted); font-size: 12.5px; line-height: 1.4; display: block; margin-top: 2px; }
+.node.hi { border-color: var(--accent); }
+.arrow { align-self: center; color: var(--muted); font-family: var(--font-mono); }
+.note { font-size: 13px; color: var(--muted); margin-top: 12px; }
+
+/* SQL table + code */
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 500 11px var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+td.n { font-family: var(--font-mono); color: var(--muted); width: 2.2em; }
+pre { margin: 14px 0 0; padding: 14px; background: var(--paper); border: 1px solid var(--rule); overflow-x: auto; font: 12.5px/1.55 var(--font-mono); }
+
+/* Skills */
+.skills { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--rule); background: var(--panel); }
+.skill { padding: 20px; border-right: 1px solid var(--rule); }
+.skill:last-child { border-right: 0; }
+.skill h3 { font-size: 20px; font-weight: 600; margin-bottom: 10px; }
+.skill ul { margin: 0; padding: 0; list-style: none; font-size: 15px; display: grid; gap: 4px; }
+
+/* About + contact */
+.about { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.about p { margin: 0 0 14px; max-width: 34em; }
+.contact { display: grid; gap: 10px; font-size: 16px; }
+.contact div { display: grid; grid-template-columns: 7em 1fr; gap: 10px; padding-bottom: 10px; border-bottom: 1px dotted var(--rule); }
+.contact .k { font: 500 12px var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding-top: 3px; }
+footer { padding: 28px 0 40px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); }
+
+@media (max-width: 860px) {
+  .hero, .sch-body, .about { grid-template-columns: 1fr; gap: 32px; }
+  .skills { grid-template-columns: 1fr 1fr; }
+  .skill:nth-child(2) { border-right: 0; }
+  .skill:nth-child(-n+2) { border-bottom: 1px solid var(--rule); }
+}
+@media (max-width: 480px) {
+  .wrap { padding: 0 16px; }
+  .skills { grid-template-columns: 1fr; }
+  .skill { border-right: 0; border-bottom: 1px solid var(--rule); }
+  .calc .row { grid-template-columns: 1fr; }
+  nav { gap: 14px; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">Francesko</div>
+    <nav aria-label="Sections">
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <div>
+      <div class="role">Data Analyst · BI · Data Engineering</div>
+      <h1>I turn financial data into decisions.</h1>
+      <p class="lede">Eight years in tax and finance at Deloitte taught me what numbers mean and what happens when they are wrong. Now I build the pipelines, models and dashboards behind them.</p>
+    </div>
+    <div class="ledger" aria-label="Profile summary">
+      <div class="cap">Statement of qualifications</div>
+      <div class="line"><span class="no">01</span><span class="txt">Tax &amp; finance, Deloitte GES</span><span class="val">8 yrs</span></div>
+      <div class="line"><span class="no">02</span><span class="txt">BSc Economics · MSc Finance &amp; Audit</span><span class="val">✓</span></div>
+      <div class="line"><span class="no">03</span><span class="txt">SQL · Python · Power BI · Fabric</span><span class="val">✓</span></div>
+      <div class="line"><span class="no">04</span><span class="txt">Pipelines: Airflow · PostgreSQL</span><span class="val">✓</span></div>
+      <div class="line"><span class="no">05</span><span class="txt">AI-assisted analysis</span><span class="val">✓</span></div>
+      <div class="total"><span class="no">TOT</span><span class="txt">An analyst who knows what the numbers mean</span></div>
+    </div>
+  </div>
+
+  <section id="projects">
+    <div class="sec-head">
+      <h2>Projects</h2>
+      <p>Each project starts with a business question and ends with an answer. Code is on GitHub.</p>
+    </div>
+
+    <!-- Schedule A: tax calculator -->
+    <article class="schedule">
+      <div class="sch-top"><span>Schedule A · Python · Power BI</span><span class="status">Engine complete · 16 tests passing</span></div>
+      <div class="sch-body">
+        <div>
+          <h3>How much does Italy's impatriate regime really save?</h3>
+          <dl class="qa">
+            <div><dt>Question</dt><dd>A company is moving an employee to Milan. What will they take home, and how much does the impatriate regime save compared with standard taxation?</dd></div>
+            <div><dt>What I built</dt><dd>A unit-tested Python tax engine using public 2025 and 2026 Italian rules (IRPEF, INPS, employee deductions, regional and municipal surcharges), plus a scenario generator feeding a Power BI what-if report.</dd></div>
+            <div><dt>Finding</dt><dd>At €80,000 gross, the regime cuts the effective tax rate from 31% to 10%, worth about €16,800 a year, or roughly €84,000 over five years.</dd></div>
+          </dl>
+          <ul class="tags"><li>Python</li><li>pytest</li><li>Power BI</li><li>DAX</li><li>Tax domain</li></ul>
+          <div class="links"><a data-repo="expat-tax-calculator" href="#">Code on GitHub →</a></div>
+        </div>
+        <div class="figure">
+          <p class="fig-title">From €50k up, the regime takes about 21 points off the tax rate</p>
+          <p class="fig-sub">Effective income tax rate by gross salary, Milan, 2026 rules</p>
+          <div class="chart" id="taxChart" role="img" aria-label="Line chart: effective tax rate by gross salary, standard regime versus impatriate regime"></div>
+          <div class="legend"><span class="std">Standard</span><span class="imp">Impatriate (50% exempt)</span></div>
+          <div class="calc">
+            <label for="salary"><span>Gross salary</span><strong class="mono" id="salaryOut">€80,000</strong></label>
+            <input type="range" id="salary" min="20000" max="300000" step="5000" value="80000">
+            <div class="row">
+              <div><div class="k">Net, standard</div><div class="v" id="netStd">–</div></div>
+              <div><div class="k">Net, impatriate</div><div class="v" id="netImp">–</div></div>
+              <div><div class="k">Yearly saving</div><div class="v save" id="saving">–</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Schedule B: Balkan inflation -->
+    <article class="schedule">
+      <div class="sch-top"><span>Schedule B · Microsoft Fabric · Power BI</span><span class="status">In progress</span></div>
+      <div class="sch-body">
+        <div>
+          <h3>Did wages keep up with food prices in the Western Balkans?</h3>
+          <dl class="qa">
+            <div><dt>Question</dt><dd>Since 2015, have average wages in Albania, Kosovo, North Macedonia, Montenegro and Serbia kept pace with the price of bread, meat, milk, eggs and oil, and how does each compare with the EU?</dd></div>
+            <div><dt>What I built</dt><dd>An end-to-end Fabric pipeline: Eurostat API ingestion, a bronze–silver–gold Lakehouse with data-quality checks, a star schema and a Direct Lake semantic model.</dd></div>
+            <div><dt>Key metric</dt><dd>Food affordability index = wage index ÷ food price index × 100. Above 100, wages grew faster than food prices.</dd></div>
+          </dl>
+          <ul class="tags"><li>Microsoft Fabric</li><li>PySpark</li><li>Delta Lake</li><li>T-SQL</li><li>DAX</li><li>REST API</li></ul>
+          <div class="links"><a data-repo="balkan-food-inflation" href="#">Code on GitHub →</a></div>
+        </div>
+        <div class="figure">
+          <p class="fig-title">Pipeline architecture</p>
+          <p class="fig-sub">Each layer is validated before the next one runs</p>
+          <div class="flow">
+            <div class="node"><b>Sources</b><small>Eurostat HICP API · national wage statistics</small></div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="node"><b>Bronze</b><small>Raw JSON and CSV, kept per run</small></div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="node"><b>Silver</b><small>Typed Delta tables, DQ checks</small></div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="node"><b>Gold</b><small>Star schema: 3 dimensions, 2 facts</small></div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="node hi"><b>Power BI</b><small>Affordability by country and year</small></div>
+          </div>
+          <p class="note">Dashboard screenshot and findings will appear here when the report is finished.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Schedule C: SQL -->
+    <article class="schedule">
+      <div class="sch-top"><span>Schedule C · PostgreSQL</span><span class="status">Queries complete · findings in progress</span></div>
+      <div class="sch-body">
+        <div>
+          <h3>Why don't marketplace customers come back?</h3>
+          <dl class="qa">
+            <div><dt>Question</dt><dd>An online marketplace (Olist, Brazil, about 100,000 orders) wants to know where revenue comes from, why customers don't return, and whether late deliveries hurt its reputation.</dd></div>
+            <div><dt>What I built</dt><dd>12 business questions answered in pure SQL across 8 related tables, from monthly trends to cohort retention and customer value segments.</dd></div>
+          </dl>
+          <ul class="tags"><li>PostgreSQL</li><li>CTEs</li><li>Window functions</li><li>Cohort analysis</li><li>RFM</li></ul>
+          <div class="links"><a data-repo="sql-ecommerce-case-study" href="#">Code on GitHub →</a></div>
+        </div>
+        <div class="figure">
+          <p class="fig-title">Selected questions</p>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>#</th><th>Question</th><th>Technique</th></tr></thead>
+              <tbody>
+                <tr><td class="n">2</td><td>How is revenue trending month to month?</td><td>LAG, moving average</td></tr>
+                <tr><td class="n">5</td><td>How well do monthly cohorts retain?</td><td>Cohort analysis</td></tr>
+                <tr><td class="n">6</td><td>Who are the best customers?</td><td>RFM with NTILE</td></tr>
+                <tr><td class="n">7</td><td>Does late delivery hurt reviews?</td><td>CASE buckets</td></tr>
+                <tr><td class="n">9</td><td>How many categories make 80% of revenue?</td><td>Pareto, running total</td></tr>
+              </tbody>
+            </table>
+          </div>
+<pre><code>-- Q7: late delivery vs review score
+SELECT delivery_bucket,
+       ROUND(AVG(r.review_score), 2) AS avg_review,
+       ROUND(100.0 * COUNT(*) FILTER (WHERE r.review_score &lt;= 2)
+             / COUNT(*), 1)          AS pct_bad_reviews
+FROM delivery d
+JOIN order_reviews r USING (order_id)
+GROUP BY delivery_bucket;</code></pre>
+        </div>
+      </div>
+    </article>
+
+    <!-- Schedule D: Payroll reconciliation -->
+    <article class="schedule">
+      <div class="sch-top"><span>Schedule D · dbt · Airflow · CI/CD · Power BI</span><span class="status">Planned</span></div>
+      <div class="sch-body">
+        <div>
+          <h3>Can payroll, ledger and tax data be reconciled automatically?</h3>
+          <dl class="qa">
+            <div><dt>Problem</dt><dd>Multinationals pay mobile employees through several payroll systems. Each month, finance teams reconcile payroll, general ledger and tax withholding by hand, and errors surface months later in tax filings.</dd></div>
+            <div><dt>What I'm building</dt><dd>A reconciliation engine on realistic synthetic data with known, injected errors. dbt models match records across three sources, data contracts and tests guard every load, a statistical layer flags anomalies, Apache Airflow runs the monthly close end to end, and GitHub Actions runs the test suite on every change.</dd></div>
+            <div><dt>How it's measured</dt><dd>Because the injected errors are known, the engine is scored on how many it catches and how many false alarms it raises, the same way an audit would test a control.</dd></div>
+          </dl>
+          <ul class="tags"><li>dbt</li><li>PostgreSQL</li><li>Python</li><li>Data contracts</li><li>Anomaly detection</li><li>Apache Airflow</li><li>GitHub Actions</li><li>Power BI</li></ul>
+          <div class="links"><a data-repo="payroll-reconciliation-engine" href="#">Code on GitHub →</a></div>
+        </div>
+        <div class="figure">
+          <p class="fig-title">Reconciliation flow</p>
+          <p class="fig-sub">Every break gets a reason code and an owner</p>
+          <div class="flow">
+            <div class="node"><b>3 sources</b><small>Payroll · general ledger · tax withholding</small></div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="node"><b>Contracts</b><small>Schema and value checks before loading</small></div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="node"><b>dbt matching</b><small>Exact, tolerance and many-to-one rules</small></div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="node"><b>Anomalies</b><small>Statistical outliers by employee and month</small></div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="node hi"><b>Exceptions</b><small>Power BI queue with row-level security</small></div>
+          </div>
+          <p class="note">Results and dashboard will appear here when the project is built.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Schedule E: Financial statements -->
+    <article class="schedule">
+      <div class="sch-top"><span>Schedule E · Microsoft Fabric · Python · Power BI</span><span class="status">Planned</span></div>
+      <div class="sch-body">
+        <div>
+          <h3>Which large US companies are under margin pressure?</h3>
+          <dl class="qa">
+            <div><dt>Question</dt><dd>Using official filings, which S&amp;P 500 companies have seen operating margins shrink over the last five years, and is the cause rising costs or slowing revenue?</dd></div>
+            <div><dt>What I'm building</dt><dd>Incremental ingestion of company financial data from the free SEC EDGAR API, a mapping layer that standardises inconsistent accounting tags into one income statement, ratio and variance models, and a Power BI report with deployment pipelines from dev to production.</dd></div>
+            <div><dt>Why it's hard</dt><dd>Companies report the same line item under different tags and restate prior years. Standardising this reliably is the real work, and the kind of problem finance data teams face every day.</dd></div>
+          </dl>
+          <ul class="tags"><li>REST API</li><li>Incremental loads</li><li>Microsoft Fabric</li><li>PySpark</li><li>Financial ratios</li><li>Deployment pipelines</li><li>DAX</li></ul>
+          <div class="links"><a data-repo="sec-financials-analytics" href="#">Code on GitHub →</a></div>
+        </div>
+        <div class="figure">
+          <p class="fig-title">From raw filings to a comparable P&amp;L</p>
+          <p class="fig-sub">Only new filings are loaded on each run</p>
+          <div class="flow">
+            <div class="node"><b>SEC EDGAR</b><small>Company financial data API</small></div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="node"><b>Incremental load</b><small>New filings only, raw kept</small></div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="node"><b>Tag mapping</b><small>Inconsistent tags into one P&amp;L, restatements handled</small></div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="node"><b>Ratios</b><small>Margins, growth, cost drivers</small></div>
+            <div class="arrow" aria-hidden="true">→</div>
+            <div class="node hi"><b>Power BI</b><small>Dev → test → prod pipeline</small></div>
+          </div>
+          <p class="note">Results and dashboard will appear here when the project is built.</p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section id="skills">
+    <div class="sec-head"><h2>Skills</h2><p>Grouped by the job they do.</p></div>
+    <div class="skills">
+      <div class="skill"><h3>Analysis</h3><ul><li>SQL (CTEs, window functions)</li><li>Python, pandas</li><li>Excel</li><li>Financial and tax analysis</li></ul></div>
+      <div class="skill"><h3>BI</h3><ul><li>Power BI</li><li>DAX, Power Query</li><li>Star-schema modelling</li><li>Dashboard design</li></ul></div>
+      <div class="skill"><h3>Engineering</h3><ul><li>Microsoft Fabric</li><li>Apache Airflow</li><li>PostgreSQL</li><li>Git, pytest</li></ul></div>
+      <div class="skill"><h3>AI</h3><ul><li>AI-assisted analysis</li><li>Copilot in Power BI</li><li>Prompting for SQL and Python</li><li>Validating AI output</li></ul></div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="about">
+      <div class="sec-head" style="margin:0"><h2>About</h2></div>
+      <div>
+        <p>For eight years I have prepared and reviewed Italian tax returns for internationally mobile employees at Deloitte. The hardest part was rarely the calculation. It was taking data from many client systems and getting it into a shape you can trust.</p>
+        <p>That is what drew me to data. I now build the whole path: ingesting data from APIs and files, modelling it in SQL and Microsoft Fabric, orchestrating pipelines with Airflow, and presenting it in Power BI.</p>
+        <p>I use AI to work faster and check every result before it reaches a decision. I am looking for a role in data analysis, BI or data engineering, especially in finance, tax or HR data.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="about">
+      <div class="sec-head" style="margin:0"><h2>Contact</h2></div>
+      <div class="contact">
+        <div><span class="k">LinkedIn</span><a id="linkedin" href="#">LinkedIn profile</a></div>
+        <div><span class="k">GitHub</span><a id="github" href="#">GitHub profile</a></div>
+        <div><span class="k">Email</span><span id="email"></span></div>
+        <div><span class="k">Based in</span><span id="location"></span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">Built with HTML, CSS and JavaScript. Tax figures are from a simplified model using public rules, not tax advice.</div></footer>
+
+<script>
+// ===== EDIT THESE =====
+const CONFIG = {
+  github: "your-github-username",
+  linkedin: "https://www.linkedin.com/in/your-profile/",
+  email: "your.email@example.com",
+  location: "Tirana, Albania"
+};
+// ======================
+
+document.querySelectorAll("[data-repo]").forEach(a => {
+  a.href = `https://github.com/${CONFIG.github}/${a.dataset.repo}`;
+});
+document.getElementById("github").href = `https://github.com/${CONFIG.github}`;
+document.getElementById("github").textContent = `github.com/${CONFIG.github}`;
+document.getElementById("linkedin").href = CONFIG.linkedin;
+document.getElementById("linkedin").textContent = CONFIG.linkedin.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
+document.getElementById("email").textContent = CONFIG.email;
+document.getElementById("location").textContent = CONFIG.location;
+
+// Output of expat-tax-calculator/scripts/generate_scenarios.py, 2026 rules, Milan.
+// [gross, net standard, effective rate standard %, net impatriate, effective rate impatriate %]
+const TAX = [[20000,17433,8.0,18879,1.2],[25000,20570,8.5,23110,3.2],[30000,23426,12.7,27341,4.5],[35000,26032,16.4,32474,2.4],[40000,27960,20.9,36466,4.0],[45000,30034,24.1,39497,3.0],[50000,32568,25.7,43272,4.3],[55000,35101,27.0,46847,5.6],[60000,37550,28.2,50631,6.3],[65000,39996,29.1,54204,7.3],[70000,42442,30.0,57702,8.2],[75000,44888,30.7,60956,9.3],[80000,47334,31.3,64108,10.4],[85000,49780,31.9,67326,11.3],[90000,52226,32.4,70630,11.9],[95000,54672,32.8,74128,12.4],[100000,57118,33.2,77626,12.7],[105000,59564,33.6,81124,13.1],[110000,62010,33.9,84622,13.4],[115000,64456,34.2,88094,13.7],[120000,66902,34.5,91563,14.0],[125000,69592,34.9,95377,14.3],[130000,72315,35.3,99238,14.6],[135000,75039,35.7,103100,14.9],[140000,77762,36.1,106962,15.2],[145000,80486,36.4,110824,15.5],[150000,83209,36.7,114685,15.7],[155000,85933,37.0,118547,15.9],[160000,88656,37.3,122409,16.2],[165000,91380,37.5,126271,16.4],[170000,94103,37.7,130132,16.5],[175000,96827,38.0,133994,16.7],[180000,99550,38.2,137856,16.9],[185000,102274,38.4,141718,17.1],[190000,104997,38.6,145579,17.2],[195000,107721,38.7,149441,17.3],[200000,110444,38.9,153303,17.5],[205000,113168,39.1,157165,17.6],[210000,115891,39.2,161026,17.7],[215000,118615,39.4,164888,17.8],[220000,121338,39.5,168750,18.0],[225000,124062,39.6,172612,18.1],[230000,126785,39.8,176473,18.2],[235000,129509,39.9,180335,18.3],[240000,132232,40.0,184197,18.4],[245000,134956,40.1,188059,18.5],[250000,137679,40.2,191920,18.5],[255000,140403,40.3,195782,18.6],[260000,143126,40.4,199644,18.7],[265000,145850,40.5,203506,18.8],[270000,148573,40.6,207367,18.9],[275000,151297,40.7,211229,18.9],[280000,154020,40.8,215091,19.0],[285000,156744,40.9,218953,19.1],[290000,159467,41.0,222814,19.1],[295000,162191,41.0,226676,19.2],[300000,164914,41.1,230538,19.2]];
+
+const eur = n => "€" + Math.round(n).toLocaleString("en-US");
+
+function drawChart() {
+  const el = document.getElementById("taxChart");
+  const W = 560, H = 300, m = { t: 14, r: 16, b: 34, l: 40 };
+  const x = g => m.l + (g - 20000) / (300000 - 20000) * (W - m.l - m.r);
+  const y = p => m.t + (1 - p / 45) * (H - m.t - m.b);
+  const path = i => TAX.map((d, k) => (k ? "L" : "M") + x(d[0]).toFixed(1) + " " + y(d[i]).toFixed(1)).join(" ");
+  let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  for (const p of [0, 10, 20, 30, 40]) {
+    s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(p)}" y2="${y(p)}" style="stroke:var(--rule)" stroke-width="1"/>`;
+    s += `<text x="${m.l - 8}" y="${y(p) + 4}" text-anchor="end">${p}%</text>`;
+  }
+  for (const g of [20000, 100000, 200000, 300000]) {
+    s += `<text x="${x(g)}" y="${H - 10}" text-anchor="middle">€${g / 1000}k</text>`;
+  }
+  s += `<path d="${path(2)}" style="fill:none;stroke:var(--muted)" stroke-width="2"/>`;
+  s += `<path d="${path(4)}" style="fill:none;stroke:var(--accent)" stroke-width="2.5"/>`;
+  s += `<line id="marker" y1="${m.t}" y2="${H - m.b}" style="stroke:var(--ink)" stroke-dasharray="3 3" stroke-width="1"/>`;
+  s += `<circle id="dotStd" r="4" style="fill:var(--muted)"/><circle id="dotImp" r="4.5" style="fill:var(--accent)"/>`;
+  s += `<text id="lblStd" text-anchor="start"></text><text id="lblImp" text-anchor="start"></text>`;
+  s += `</svg>`;
+  el.innerHTML = s;
+
+  const input = document.getElementById("salary");
+  function update() {
+    const g = +input.value;
+    const d = TAX.find(r => r[0] === g);
+    document.getElementById("salaryOut").textContent = eur(g);
+    document.getElementById("netStd").textContent = eur(d[1]);
+    document.getElementById("netImp").textContent = eur(d[3]);
+    document.getElementById("saving").textContent = "+" + eur(d[3] - d[1]);
+    const mx = x(g);
+    const mk = document.getElementById("marker");
+    mk.setAttribute("x1", mx); mk.setAttribute("x2", mx);
+    const ds = document.getElementById("dotStd"), di = document.getElementById("dotImp");
+    ds.setAttribute("cx", mx); ds.setAttribute("cy", y(d[2]));
+    di.setAttribute("cx", mx); di.setAttribute("cy", y(d[4]));
+    const flip = mx > W - 120;
+    for (const [id, v, cy] of [["lblStd", d[2], y(d[2])], ["lblImp", d[4], y(d[4])]]) {
+      const t = document.getElementById(id);
+      t.setAttribute("x", flip ? mx - 8 : mx + 8);
+      t.setAttribute("text-anchor", flip ? "end" : "start");
+      t.setAttribute("y", cy - 8);
+      t.textContent = v.toFixed(1) + "%";
+      t.style.fill = id === "lblImp" ? "var(--accent)" : "var(--muted)";
+    }
+  }
+  input.addEventListener("input", update);
+  update();
+}
+drawChart();
+</script>
+</body>
+</html>
