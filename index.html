@@ -19,6 +19,9 @@
   --rule: #cbd4d1;
   --accent: #0d6a56;
   --accent-soft: #dcece7;
+  --neg: #b4473a;
+  --band: rgba(13,106,86,.10);
+  --band2: rgba(13,106,86,.20);
   --font-display: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif;
   --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -27,12 +30,12 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --paper: #0e1615; --panel: #141f1d; --ink: #e5ece9; --muted: #95a6a1;
-    --rule: #2b3a37; --accent: #46c4a3; --accent-soft: #173b33; color-scheme: dark;
+    --rule: #2b3a37; --accent: #46c4a3; --accent-soft: #173b33; --neg: #e2806f; --band: rgba(70,196,163,.10); --band2: rgba(70,196,163,.22); color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --paper: #0e1615; --panel: #141f1d; --ink: #e5ece9; --muted: #95a6a1;
-  --rule: #2b3a37; --accent: #46c4a3; --accent-soft: #173b33; color-scheme: dark;
+  --rule: #2b3a37; --accent: #46c4a3; --accent-soft: #173b33; --neg: #e2806f; --band: rgba(70,196,163,.10); --band2: rgba(70,196,163,.22); color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -151,6 +154,10 @@ pre { margin: 14px 0 0; padding: 14px; background: var(--paper); border: 1px sol
 
 /* About + contact */
 .about { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.about-side { display: grid; gap: 22px; align-content: start; }
+.about-side h2 { font-size: 34px; font-weight: 600; }
+.avatar { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; background: #fff; box-shadow: 0 0 0 6px var(--panel), 0 0 0 7px var(--rule); }
+@media (max-width: 860px) { .avatar { width: 150px; height: 150px; } }
 .about p { margin: 0 0 14px; max-width: 34em; }
 .contact { display: grid; gap: 10px; font-size: 16px; }
 .contact div { display: grid; grid-template-columns: 7em 1fr; gap: 10px; padding-bottom: 10px; border-bottom: 1px dotted var(--rule); }
@@ -170,6 +177,108 @@ main { padding-bottom: 40px; }
   .calc .row { grid-template-columns: 1fr; }
   nav { gap: 14px; }
 }
+
+/* ---- Design pass 2 ---- */
+header.top { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--paper) 90%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.hero { position: relative; }
+body { overflow-x: clip; }
+.hero::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: linear-gradient(var(--rule) 1px, transparent 1px); background-size: 100% 32px; opacity: .18;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent); }
+.cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border: 1px solid var(--ink); color: var(--ink); text-decoration: none; font: 600 15px var(--font-body); background: var(--panel); }
+.btn.primary { background: var(--ink); color: var(--paper); }
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn.primary:hover { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+.ledger { box-shadow: 6px 6px 0 var(--accent-soft); }
+
+section { counter-increment: sec; }
+main { counter-reset: sec; }
+
+.index { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0; border: 1px solid var(--rule); background: var(--panel); margin-bottom: 32px; }
+.index a { display: grid; grid-template-columns: 2.2em 1fr; gap: 12px; align-items: start; padding: 14px 18px; text-decoration: none; color: var(--ink); border-bottom: 1px solid var(--rule); border-right: 1px solid var(--rule); margin: 0 -1px -1px 0; }
+.index a:hover { background: var(--accent-soft); }
+.index .lt { font: 700 26px/1 var(--font-display); color: var(--accent); }
+.index .tt { font: 600 16px/1.3 var(--font-display); }
+.index .st { display: block; margin-top: 4px; font: 400 11px var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+
+.schedule { position: relative; scroll-margin-top: 80px; transition: border-color .2s ease, box-shadow .2s ease; }
+.schedule::before { content: ""; position: absolute; left: -1px; top: -1px; bottom: -1px; width: 4px; background: var(--rule); }
+.schedule.s-live::before { background: var(--accent); }
+.schedule.s-progress::before { background: color-mix(in srgb, var(--accent) 45%, var(--rule)); }
+.schedule:hover { border-color: color-mix(in srgb, var(--accent) 40%, var(--rule)); box-shadow: 0 10px 30px -18px rgba(0,0,0,.35); }
+.sch-top .status { padding: 3px 9px; background: var(--accent-soft); letter-spacing: .06em; }
+.schedule.s-planned .sch-top .status { background: transparent; border: 1px dashed var(--rule); color: var(--muted); }
+.sch-body h3 { font-size: 30px; }
+
+.skill ul { gap: 8px; }
+.skill li { padding-left: 14px; position: relative; }
+.skill li::before { content: ""; position: absolute; left: 0; top: .7em; width: 6px; height: 1px; background: var(--accent); }
+.skill h3 { color: var(--accent); }
+
+.contact a { font-weight: 500; }
+@media (prefers-reduced-motion: reduce) { .schedule { transition: none; } }
+@media (max-width: 860px) {
+  .hero { padding: 40px 0 40px; }
+  .sch-body h3 { font-size: 25px; }
+  .sch-body { padding: 22px 18px; }
+  .sch-top { padding: 12px 18px; }
+}
+@media (max-width: 480px) {
+  .index { grid-template-columns: 1fr; }
+  .index a { border-right: 0; margin-right: 0; }
+  .btn { flex: 1 1 auto; justify-content: center; }
+  header.top .wrap { padding-top: 12px; padding-bottom: 12px; }
+  .sec-head h2 { font-size: 28px; }
+  .ledger { box-shadow: 4px 4px 0 var(--accent-soft); }
+}
+
+/* ---- Dashboard samples ---- */
+.dash { background: var(--panel); border: 1px solid var(--rule); padding: 26px 26px 18px; margin-bottom: 28px; }
+.dash-head { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; flex-wrap: wrap; }
+.dash .eyebrow { font: 500 12px var(--font-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 8px; }
+.dash h3 { font-size: 30px; font-weight: 600; max-width: 22em; }
+.dash-sub { margin: 8px 0 0; color: var(--muted); max-width: 40em; font-size: 15.5px; }
+.seg { display: inline-flex; border: 1px solid var(--rule); flex-shrink: 0; }
+.seg button { font: 500 13px var(--font-body); padding: 9px 14px; min-height: 40px; background: var(--panel); color: var(--muted); border: 0; cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin: 22px 0 8px; }
+.kpis > div { padding: 12px 14px 12px 0; display: grid; gap: 2px; }
+.kpis > div + div { padding-left: 14px; border-left: 1px solid var(--rule); }
+.kpis .k { font: 500 11px var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.kpis .v { font: 600 22px var(--font-display); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.kpis .v.up { color: var(--accent); }
+.dchart { position: relative; width: 100%; }
+.dchart svg { display: block; width: 100%; height: auto; touch-action: pan-y; }
+.dchart text { fill: var(--muted); font: 12px var(--font-mono); }
+.dchart .lbl { fill: var(--ink); font: 600 13px var(--font-body); }
+.dchart .ann { fill: var(--ink); font: 600 12px var(--font-body); paint-order: stroke; stroke: var(--panel); stroke-width: 4px; stroke-linejoin: round; }
+.tip { position: absolute; pointer-events: none; opacity: 0; background: var(--ink); color: var(--paper); font: 13px/1.45 var(--font-body); padding: 9px 11px; min-width: 150px; transform: translate(-50%, calc(-100% - 12px)); transition: opacity .12s; z-index: 2; }
+.tip b { font-weight: 600; display: block; margin-bottom: 2px; }
+.tip .r { display: flex; justify-content: space-between; gap: 14px; font-variant-numeric: tabular-nums; }
+.tip.on { opacity: 1; }
+.dash-foot { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; font-size: 13px; color: var(--muted); margin-top: 6px; }
+.dash-foot .src { margin-left: auto; font-size: 12.5px; }
+.lg { display: inline-flex; align-items: center; gap: 7px; }
+.sw { width: 12px; height: 12px; display: inline-block; }
+.sw.tot { background: var(--ink); } .sw.pos { background: var(--accent); } .sw.neg { background: var(--neg); }
+.sw.b80 { background: var(--band2); } .sw.b95 { background: var(--band); outline: 1px solid var(--band2); }
+.ln { width: 20px; height: 0; display: inline-block; border-top: 2.5px solid var(--ink); }
+.ln.fc { border-top: 2px dashed var(--accent); }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--neg); display: inline-block; }
+@media (prefers-reduced-motion: reduce) { .tip { transition: none; } }
+@media (max-width: 760px) {
+  .dash { padding: 20px 16px 14px; }
+  .dash h3 { font-size: 23px; }
+  .kpis { grid-template-columns: 1fr 1fr; }
+  .kpis > div:nth-child(3) { padding-left: 0; border-left: 0; }
+  .kpis > div:nth-child(n+3) { border-top: 1px solid var(--rule); }
+  .kpis .v { font-size: 19px; }
+  .dash-foot .src { margin-left: 0; width: 100%; }
+  .seg { width: 100%; } .seg button { flex: 1; }
+}
 </style>
 </head>
 <body>
@@ -179,6 +288,7 @@ main { padding-bottom: 40px; }
     <div class="brand">Francesko</div>
     <nav aria-label="Sections">
       <a href="#projects">Projects</a>
+      <a href="#dashboards">Dashboards</a>
       <a href="#skills">Skills</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
@@ -192,6 +302,7 @@ main { padding-bottom: 40px; }
       <div class="role">Data Analyst · BI · Data Engineering</div>
       <h1>I turn financial data into decisions.</h1>
       <p class="lede">Eight years in tax and finance at Deloitte and two years as an e-commerce data analyst taught me what numbers mean and what happens when they are wrong. I build the pipelines, models and dashboards behind them.</p>
+      <div class="cta"><a class="btn primary" href="#projects">View projects</a><a class="btn" href="#contact">Get in touch</a></div>
     </div>
     <div class="ledger" aria-label="Profile summary">
       <div class="cap">Statement of qualifications</div>
@@ -210,6 +321,7 @@ main { padding-bottom: 40px; }
       <h2>Projects</h2>
       <p>Each project starts with a business question and ends with an answer.</p>
     </div>
+    <nav class="index" id="projIndex" aria-label="Project index"></nav>
 
     <!-- Schedule A: tax calculator -->
     <article class="schedule">
@@ -417,53 +529,80 @@ GROUP BY delivery_bucket;</code></pre>
       </div>
     </article>
 
-    <!-- Schedule G: Financial statements -->
-    <article class="schedule">
-      <div class="sch-top"><span>Schedule G · Microsoft Fabric · Python · Power BI</span><span class="status">Planned</span></div>
-      <div class="sch-body">
+  </section>
+
+  <section id="dashboards">
+    <div class="sec-head">
+      <h2>Dashboard samples</h2>
+      <p>Two examples of how I present numbers to decision makers. Hover or tap the charts to explore. Both use sample data.</p>
+    </div>
+
+    <article class="dash" aria-labelledby="d1title">
+      <div class="dash-head">
         <div>
-          <h3>Which large US companies are under margin pressure?</h3>
-          <dl class="qa">
-            <div><dt>Question</dt><dd>Using official filings, which S&amp;P 500 companies have seen operating margins shrink over the last five years, and is the cause rising costs or slowing revenue?</dd></div>
-            <div><dt>What I'm building</dt><dd>Incremental ingestion of company financial data from the free SEC EDGAR API, a mapping layer that standardises inconsistent accounting tags into one income statement, ratio and variance models, and a Power BI report with deployment pipelines from dev to production.</dd></div>
-            <div><dt>Why it's hard</dt><dd>Companies report the same line item under different tags and restate prior years. Standardising this reliably is the real work, and the kind of problem finance data teams face every day.</dd></div>
-          </dl>
-          <ul class="tags"><li>REST API</li><li>Incremental loads</li><li>Microsoft Fabric</li><li>PySpark</li><li>Financial ratios</li><li>Deployment pipelines</li><li>DAX</li></ul>
-          <div class="links"><a data-repo="sec-financials-analytics" href="#">Code on GitHub →</a></div>
+          <div class="eyebrow">Sample 1 · Revenue bridge · Price–volume–mix analysis</div>
+          <h3 id="d1title">Revenue grew €3.5M, and volume did most of the work</h3>
+          <p class="dash-sub">Year-on-year revenue change, FY2024 to FY2025, broken down into what caused it.</p>
         </div>
-        <div class="figure">
-          <p class="fig-title">From raw filings to a comparable P&amp;L</p>
-          <p class="fig-sub">Only new filings are loaded on each run</p>
-          <div class="flow">
-            <div class="node"><b>SEC EDGAR</b><small>Company financial data API</small></div>
-            <div class="arrow" aria-hidden="true">→</div>
-            <div class="node"><b>Incremental load</b><small>New filings only, raw kept</small></div>
-            <div class="arrow" aria-hidden="true">→</div>
-            <div class="node"><b>Tag mapping</b><small>Inconsistent tags into one P&amp;L, restatements handled</small></div>
-            <div class="arrow" aria-hidden="true">→</div>
-            <div class="node"><b>Ratios</b><small>Margins, growth, cost drivers</small></div>
-            <div class="arrow" aria-hidden="true">→</div>
-            <div class="node hi"><b>Power BI</b><small>Dev → test → prod pipeline</small></div>
-          </div>
-          <p class="note">Results and dashboard will appear here when the project is built.</p>
+        <div class="seg" role="group" aria-label="Break down the change by">
+          <button type="button" data-view="driver" aria-pressed="true">By driver</button>
+          <button type="button" data-view="category" aria-pressed="false">By category</button>
         </div>
+      </div>
+      <div class="kpis">
+        <div><span class="k">FY2024 revenue</span><span class="v">€24.6M</span></div>
+        <div><span class="k">FY2025 revenue</span><span class="v">€28.1M</span></div>
+        <div><span class="k">Growth</span><span class="v up">+14.2%</span></div>
+        <div><span class="k" id="d1kLabel">Largest driver</span><span class="v" id="d1kValue">Volume +€2.9M</span></div>
+      </div>
+      <div class="dchart" id="bridge"><div class="tip" role="status"></div></div>
+      <div class="dash-foot">
+        <span class="lg"><i class="sw tot"></i>Total</span><span class="lg"><i class="sw pos"></i>Increase</span><span class="lg"><i class="sw neg"></i>Decrease</span>
+        <span class="src">Sample data. Vertical axis starts at €22M to make the changes readable.</span>
+      </div>
+    </article>
+
+    <article class="dash" aria-labelledby="d2title">
+      <div class="dash-head">
+        <div>
+          <div class="eyebrow">Sample 2 · Forecast monitoring · Anomaly detection</div>
+          <h3 id="d2title">Three weeks broke out of the forecast range, and each has a cause</h3>
+          <p class="dash-sub">Weekly orders in 2025 against forecast, with 80% and 95% prediction ranges. Points outside the 95% range are flagged.</p>
+        </div>
+        <div class="seg" role="group" aria-label="Time range">
+          <button type="button" data-range="year" aria-pressed="true">Full year</button>
+          <button type="button" data-range="q4" aria-pressed="false">Q4 peak</button>
+        </div>
+      </div>
+      <div class="kpis">
+        <div><span class="k">Orders 2025</span><span class="v" id="d2Total">–</span></div>
+        <div><span class="k">Forecast accuracy</span><span class="v" id="d2Acc">–</span></div>
+        <div><span class="k">Weeks flagged</span><span class="v" id="d2Flag">–</span></div>
+        <div><span class="k">Peak week</span><span class="v" id="d2Peak">–</span></div>
+      </div>
+      <div class="dchart" id="forecast"><div class="tip" role="status"></div></div>
+      <div class="dash-foot">
+        <span class="lg"><i class="ln act"></i>Actual</span><span class="lg"><i class="ln fc"></i>Forecast</span><span class="lg"><i class="sw b80"></i>80% range</span><span class="lg"><i class="sw b95"></i>95% range</span><span class="lg"><i class="dot"></i>Flagged week</span>
+        <span class="src">Sample data. Forecast accuracy = 100% − mean absolute percentage error.</span>
       </div>
     </article>
   </section>
 
   <section id="skills">
-    <div class="sec-head"><h2>Skills</h2><p>Grouped by the job they do.</p></div>
+    <div class="sec-head"><h2>Skills</h2></div>
     <div class="skills">
       <div class="skill"><h3>Analysis</h3><ul><li>SQL (CTEs, window functions)</li><li>Python, pandas</li><li>Excel</li><li>Financial and tax analysis</li></ul></div>
-      <div class="skill"><h3>BI</h3><ul><li>Power BI</li><li>DAX, Power Query</li><li>Star-schema modelling</li><li>Dashboard design</li></ul></div>
-      <div class="skill"><h3>Engineering</h3><ul><li>Microsoft Fabric</li><li>Apache Airflow</li><li>PostgreSQL</li><li>Git, pytest</li></ul></div>
+      <div class="skill"><h3>BI</h3><ul><li>Power BI</li><li>DAX, Power Query</li><li>Star &amp; snowflake schema modelling</li><li>Dashboard design</li></ul></div>
+      <div class="skill"><h3>Engineering</h3><ul><li>ETL &amp; ELT pipelines</li><li>Microsoft Fabric</li><li>Apache Airflow</li><li>PostgreSQL</li><li>Git, pytest</li></ul></div>
       <div class="skill"><h3>AI</h3><ul><li>AI-assisted analysis</li><li>Copilot in Power BI</li><li>Prompting for SQL and Python</li><li>Validating AI output</li></ul></div>
     </div>
   </section>
 
   <section id="about">
     <div class="about">
-      <div class="sec-head" style="margin:0"><h2>About</h2></div>
+      <div class="about-side">
+        <h2>About</h2>
+      </div>
       <div>
         <p>For eight years I have prepared and reviewed Italian tax returns for internationally mobile employees at Deloitte. The hardest part was rarely the calculation. It was taking data from many client systems and getting it into a shape you can trust.</p>
         <p>That is what drew me to data. I spent two years as a data analyst in e-commerce, and I now build the whole path: ingesting data from APIs and files, modelling it in SQL and Microsoft Fabric, orchestrating pipelines with Airflow, and presenting it in Power BI.</p>
@@ -487,14 +626,12 @@ GROUP BY delivery_bucket;</code></pre>
 
 
 <script>
-
 const CONFIG = {
   github: "frankokovaci",
   linkedin: "https://www.linkedin.com/in/franceskokovaci/",
   email: "franceskokovaci95@gmail.com",
   location: "Tirana, Albania"
 };
-
 
 document.querySelectorAll("[data-repo]").forEach(a => {
   a.href = `https://github.com/${CONFIG.github}/${a.dataset.repo}`;
@@ -653,6 +790,199 @@ function drawMort() {
 }
 ["mSize", "mPrice", "mRate", "mSalary"].forEach(id => document.getElementById(id).addEventListener("input", drawMort));
 drawMort();
+
+// ---------- Project index + status styling ----------
+(function () {
+  const idx = document.getElementById("projIndex");
+  document.querySelectorAll("#projects .schedule").forEach(card => {
+    const top = card.querySelector(".sch-top span").textContent;
+    const letter = (top.match(/Schedule\s+([A-Z])/) || [])[1] || "";
+    const status = card.querySelector(".sch-top .status").textContent.trim();
+    if (!card.id) card.id = "project-" + letter.toLowerCase();
+    const st = status.toLowerCase();
+    card.classList.add(st.startsWith("planned") ? "s-planned" : st.includes("live") || st.includes("complete") ? "s-live" : "s-progress");
+    const a = document.createElement("a");
+    a.href = "#" + card.id;
+    a.innerHTML = `<span class="lt">${letter}</span><span><span class="tt"></span><span class="st"></span></span>`;
+    a.querySelector(".tt").textContent = card.querySelector("h3").textContent;
+    a.querySelector(".st").textContent = status;
+    idx.appendChild(a);
+  });
+})();
+
+// ================= Dashboard samples (synthetic data) =================
+(function () {
+  const NS = "http://www.w3.org/2000/svg";
+  const fmtM = v => "€" + v.toFixed(1) + "M";
+  const fmtD = v => (v >= 0 ? "+€" : "−€") + Math.abs(v).toFixed(1) + "M";
+  const fmtN = v => Math.round(v).toLocaleString("en-US");
+  function tipAt(box, tip, x, y, html) {
+    tip.innerHTML = html; tip.classList.add("on");
+    const w = box.clientWidth, tw = tip.offsetWidth;
+    tip.style.left = Math.min(Math.max(x, tw / 2 + 4), w - tw / 2 - 4) + "px";
+    tip.style.top = y + "px";
+  }
+
+  // ---------- 1. Revenue bridge ----------
+  const BRIDGE = {
+    driver: [["Volume", 2.9], ["Price", 1.3], ["Mix", -0.4], ["Returns", -0.3]],
+    category: [["Electronics", 1.9], ["Home", 1.1], ["Fashion", 0.9], ["Beauty", 0.2], ["Sports", -0.6]]
+  };
+  const START = 24.6, END = 28.1;
+  let bView = "driver";
+  const bBox = document.getElementById("bridge"), bTip = bBox.querySelector(".tip");
+  function drawBridge() {
+    const W = Math.max(320, bBox.clientWidth), narrow = W < 600;
+    const H = narrow ? 330 : 420, m = { t: 34, r: 8, b: narrow ? 58 : 40, l: narrow ? 46 : 56 };
+    const rows = [["FY2024", START, "tot"]].concat(BRIDGE[bView].map(([n, v]) => [n, v, v >= 0 ? "pos" : "neg"]), [["FY2025", END, "tot"]]);
+    const ymin = 22, ymax = 29;
+    const y = v => m.t + (1 - (v - ymin) / (ymax - ymin)) * (H - m.t - m.b);
+    const bw = (W - m.l - m.r) / rows.length, pad = bw * (narrow ? 0.18 : 0.26);
+    let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="${NS}" role="img" aria-label="Waterfall chart from FY2024 revenue of 24.6 million euros to FY2025 revenue of 28.1 million euros">`;
+    for (let g = 22; g <= 29; g++) {
+      s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(g)}" y2="${y(g)}" style="stroke:var(--rule)" stroke-width="1"/>`;
+      s += `<text x="${m.l - 8}" y="${y(g) + 4}" text-anchor="end">€${g}M</text>`;
+    }
+    let run = 0, prevTop = null;
+    rows.forEach(([name, v, t], i) => {
+      let a, b;
+      if (t === "tot") { a = ymin; b = v; run = v; } else { a = run; b = run + v; run = b; }
+      const x0 = m.l + i * bw + pad, x1 = m.l + (i + 1) * bw - pad, top = y(Math.max(a, b)), bot = y(Math.min(a, b));
+      const col = t === "tot" ? "var(--ink)" : t === "pos" ? "var(--accent)" : "var(--neg)";
+      if (prevTop !== null) s += `<line x1="${m.l + i * bw - pad}" x2="${x0}" y1="${prevTop}" y2="${prevTop}" style="stroke:var(--muted)" stroke-dasharray="3 3" stroke-width="1"/>`;
+      prevTop = y(t === "tot" ? v : b);
+      s += `<rect class="bar" data-i="${i}" x="${x0}" y="${top}" width="${x1 - x0}" height="${Math.max(2, bot - top)}" style="fill:${col}"/>`;
+      const lblY = t === "neg" ? bot + 18 : top - 9;
+      s += `<text class="lbl" x="${(x0 + x1) / 2}" y="${lblY}" text-anchor="middle" style="font-size:${narrow ? 11.5 : 13}px">${t === "tot" ? fmtM(v) : fmtD(v)}</text>`;
+      const cx = (x0 + x1) / 2, ly = H - m.b + 18;
+      s += narrow
+        ? `<text x="${cx}" y="${ly}" text-anchor="end" transform="rotate(-35 ${cx} ${ly})" style="font-size:11px">${name}</text>`
+        : `<text x="${cx}" y="${ly}" text-anchor="middle">${name}</text>`;
+      s += `<rect class="hit" data-i="${i}" x="${m.l + i * bw}" y="${m.t}" width="${bw}" height="${H - m.t - m.b}" style="fill:transparent"/>`;
+    });
+    s += "</svg>";
+    bBox.querySelectorAll("svg").forEach(n => n.remove());
+    bBox.insertAdjacentHTML("afterbegin", s);
+    const svg = bBox.querySelector("svg"), change = END - START;
+    function show(e) {
+      const h = e.target.closest(".hit"); if (!h) return;
+      const [name, v, t] = rows[+h.dataset.i];
+      const r = svg.getBoundingClientRect(), rb = h.getBoundingClientRect();
+      const html = t === "tot" ? `<b>${name}</b><div class="r"><span>Revenue</span><span>${fmtM(v)}</span></div>`
+        : `<b>${name}</b><div class="r"><span>Change</span><span>${fmtD(v)}</span></div><div class="r"><span>Share of growth</span><span>${Math.round(v / change * 100)}%</span></div>`;
+      tipAt(bBox, bTip, rb.left - r.left + rb.width / 2, svg.querySelector(`.bar[data-i="${h.dataset.i}"]`).getBoundingClientRect().top - r.top, html);
+      svg.querySelectorAll(".bar").forEach(b => b.style.opacity = b.dataset.i === h.dataset.i ? 1 : .45);
+    }
+    svg.addEventListener("pointermove", show);
+    svg.addEventListener("pointerdown", show);
+    svg.addEventListener("pointerleave", () => { bTip.classList.remove("on"); svg.querySelectorAll(".bar").forEach(b => b.style.opacity = 1); });
+    const top = BRIDGE[bView].slice().sort((a, b) => b[1] - a[1])[0];
+    document.getElementById("d1kLabel").textContent = bView === "driver" ? "Largest driver" : "Largest category";
+    document.getElementById("d1kValue").textContent = top[0] + " " + fmtD(top[1]);
+  }
+  bBox.closest(".dash").querySelectorAll("[data-view]").forEach(b => b.addEventListener("click", () => {
+    bView = b.dataset.view;
+    b.parentElement.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+    drawBridge();
+  }));
+
+  // ---------- 2. Forecast vs actual ----------
+  let seed = 13; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const gauss = () => { let u = 0, v = 0; while (!u) u = rnd(); while (!v) v = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+  const HOL = { 46: 1.12, 47: 1.25, 48: 1.62, 49: 1.38, 50: 1.30, 51: 1.42, 52: 1.08 };
+  const EVENTS = { 14: [0.70, "Site outage"], 33: [1.24, "Summer promo"], 48: [1.19, "Black Friday"] };
+  const WEEKS = [];
+  for (let w = 1; w <= 52; w++) {
+    const f = (5200 + 26 * w) * (1 + 0.07 * Math.sin(2 * Math.PI * (w - 12) / 52)) * (HOL[w] || 1);
+    const sd = f * 0.055;
+    let a = f * (1 + 0.03 * gauss());
+    if (EVENTS[w]) a = f * EVENTS[w][0];
+    const d = new Date(Date.UTC(2024, 11, 30 + 7 * (w - 1)));
+    WEEKS.push({ w, f, a, sd, flag: Math.abs(a - f) > 1.96 * sd, date: d.toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }) });
+  }
+  const total = WEEKS.reduce((t, r) => t + r.a, 0);
+  const mape = WEEKS.reduce((t, r) => t + Math.abs(r.a - r.f) / r.a, 0) / WEEKS.length;
+  const peak = WEEKS.reduce((p, r) => r.a > p.a ? r : p);
+  document.getElementById("d2Total").textContent = fmtN(total);
+  document.getElementById("d2Acc").textContent = (100 - mape * 100).toFixed(1) + "%";
+  document.getElementById("d2Flag").textContent = WEEKS.filter(r => r.flag).length + " of 52";
+  document.getElementById("d2Peak").textContent = "Week " + peak.w;
+
+  let fRange = "year";
+  const fBox = document.getElementById("forecast"), fTip = fBox.querySelector(".tip");
+  function drawForecast() {
+    const W = Math.max(320, fBox.clientWidth), narrow = W < 600;
+    const H = narrow ? 320 : 420, m = { t: 30, r: 12, b: 34, l: narrow ? 44 : 56 };
+    const data = fRange === "q4" ? WEEKS.filter(r => r.w >= 40) : WEEKS;
+    const w0 = data[0].w, w1 = data[data.length - 1].w;
+    const hi = Math.max(...data.map(r => Math.max(r.a, r.f + 1.96 * r.sd)));
+    const lo = Math.min(...data.map(r => Math.min(r.a, r.f - 1.96 * r.sd)));
+    const step = hi - lo > 4000 ? 2000 : 1000;
+    const ymin = Math.floor(lo * 0.95 / step) * step, ymax = Math.ceil(hi * 1.04 / step) * step;
+    const x = w => m.l + (w - w0) / (w1 - w0) * (W - m.l - m.r);
+    const y = v => m.t + (1 - (v - ymin) / (ymax - ymin)) * (H - m.t - m.b);
+    const P = (arr, fn) => arr.map((r, i) => (i ? "L" : "M") + x(r.w).toFixed(1) + " " + y(fn(r)).toFixed(1)).join(" ");
+    const band = z => P(data, r => r.f + z * r.sd) + " " + data.slice().reverse().map(r => "L" + x(r.w).toFixed(1) + " " + y(r.f - z * r.sd).toFixed(1)).join(" ") + " Z";
+    let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="${NS}" role="img" aria-label="Line chart of weekly orders against forecast with prediction ranges; weeks 14, 33 and 48 fall outside the range">`;
+    for (let g = ymin; g <= ymax; g += step) {
+      s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(g)}" y2="${y(g)}" style="stroke:var(--rule)" stroke-width="1"/>`;
+      s += `<text x="${m.l - 8}" y="${y(g) + 4}" text-anchor="end">${g >= 1000 ? (g / 1000) + "k" : g}</text>`;
+    }
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    months.forEach((mo, i) => {
+      const w = Math.round(i * 52 / 12 + 1);
+      if (w < w0 || w > w1 || (narrow && fRange === "year" && i % 2)) return;
+      s += `<text x="${x(w)}" y="${H - 10}" text-anchor="middle">${mo}</text>`;
+    });
+    if (fRange === "q4") data.forEach(r => { if (r.w % 2 === 0) s += `<text x="${x(r.w)}" y="${H - 10}" text-anchor="middle" style="font-size:10.5px">W${r.w}</text>`; });
+    s += `<path d="${band(1.96)}" style="fill:var(--band)"/><path d="${band(1.28)}" style="fill:var(--band2)"/>`;
+    s += `<path d="${P(data, r => r.f)}" style="fill:none;stroke:var(--accent)" stroke-width="2" stroke-dasharray="6 4"/>`;
+    s += `<path d="${P(data, r => r.a)}" style="fill:none;stroke:var(--ink)" stroke-width="2.4" stroke-linejoin="round"/>`;
+    data.filter(r => r.flag).forEach(r => {
+      const cx = x(r.w), cy = y(r.a), up = r.a > r.f;
+      s += `<circle cx="${cx}" cy="${cy}" r="6" style="fill:var(--neg);stroke:var(--panel)" stroke-width="2"/>`;
+      if (EVENTS[r.w]) {
+        const ty = up ? cy - 14 : cy + 22, anchor = cx > W - 110 ? "end" : cx < m.l + 60 ? "start" : "middle";
+        s += `<text class="ann" x="${cx}" y="${ty}" text-anchor="${anchor}">${EVENTS[r.w][1]}</text>`;
+      }
+    });
+    s += `<line class="xh" y1="${m.t}" y2="${H - m.b}" style="stroke:var(--muted);visibility:hidden" stroke-width="1"/>`;
+    s += `<circle class="xd" r="4.5" style="fill:var(--ink);visibility:hidden"/>`;
+    s += `<rect x="${m.l}" y="${m.t}" width="${W - m.l - m.r}" height="${H - m.t - m.b}" style="fill:transparent" class="hitarea"/>`;
+    s += "</svg>";
+    fBox.querySelectorAll("svg").forEach(n => n.remove());
+    fBox.insertAdjacentHTML("afterbegin", s);
+    const svg = fBox.querySelector("svg"), xh = svg.querySelector(".xh"), xd = svg.querySelector(".xd");
+    function move(e) {
+      const r = svg.getBoundingClientRect(), px = (e.clientX - r.left) * W / r.width;
+      const w = Math.min(w1, Math.max(w0, Math.round(w0 + (px - m.l) / (W - m.l - m.r) * (w1 - w0))));
+      const d = WEEKS[w - 1], cx = x(w);
+      xh.setAttribute("x1", cx); xh.setAttribute("x2", cx); xh.style.visibility = "visible";
+      xd.setAttribute("cx", cx); xd.setAttribute("cy", y(d.a)); xd.style.visibility = "visible";
+      const dev = (d.a - d.f) / d.f * 100;
+      tipAt(fBox, fTip, cx * r.width / W, y(Math.max(d.a, d.f + 1.96 * d.sd)) * r.height / H,
+        `<b>Week ${d.w} · from ${d.date}</b>` +
+        `<div class="r"><span>Actual</span><span>${fmtN(d.a)}</span></div>` +
+        `<div class="r"><span>Forecast</span><span>${fmtN(d.f)}</span></div>` +
+        `<div class="r"><span>95% range</span><span>${fmtN(d.f - 1.96 * d.sd)}–${fmtN(d.f + 1.96 * d.sd)}</span></div>` +
+        `<div class="r"><span>Deviation</span><span>${dev >= 0 ? "+" : ""}${dev.toFixed(1)}%</span></div>` +
+        (d.flag ? `<div class="r"><span>Flag</span><span>${EVENTS[d.w] ? EVENTS[d.w][1] : "Investigate"}</span></div>` : ""));
+    }
+    svg.addEventListener("pointermove", move);
+    svg.addEventListener("pointerdown", move);
+    svg.addEventListener("pointerleave", () => { fTip.classList.remove("on"); xh.style.visibility = xd.style.visibility = "hidden"; });
+  }
+  fBox.closest(".dash").querySelectorAll("[data-range]").forEach(b => b.addEventListener("click", () => {
+    fRange = b.dataset.range;
+    b.parentElement.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+    drawForecast();
+  }));
+
+  drawBridge(); drawForecast();
+  let lastW = 0;
+  const ro = new ResizeObserver(() => { const w = bBox.clientWidth; if (Math.abs(w - lastW) > 2) { lastW = w; drawBridge(); drawForecast(); } });
+  ro.observe(bBox);
+})();
 </script>
 </body>
 </html>
